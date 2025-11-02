@@ -28,7 +28,7 @@ A standalone REST API service for automatically downloading CS2 demo files using
 
 ### Installation
 
-\`\`\`bash
+```bash
 # Clone repository
 git clone https://github.com/meinjens/replay-hunter.git
 cd replay-hunter
@@ -52,13 +52,13 @@ redis-server
 
 # Start service
 npm start
-\`\`\`
+```
 
 The service will run on \`http://localhost:3000\`
 
 ## Environment Variables
 
-\`\`\`env
+```env
 PORT=3000
 DATABASE_URL=postgresql://user:password@localhost:5432/csdemos
 REDIS_URL=redis://localhost:6379
@@ -67,7 +67,7 @@ STEAM_PASSWORD=your_steam_password
 DEMOS_PATH=./demos
 CLEANUP_ENABLED=true
 CLEANUP_DAYS=30
-\`\`\`
+```
 
 ## API Endpoints
 
@@ -76,21 +76,21 @@ CLEANUP_DAYS=30
 Request a demo download
 
 **Request:**
-\`\`\`json
+```json
 {
   "sharecode": "CSGO-xxxxx-xxxxx-xxxxx-xxxxx-xxxxx"
 }
-\`\`\`
+```
 
 **Response:**
-\`\`\`json
+```json
 {
   "id": "uuid",
   "sharecode": "CSGO-xxxxx-xxxxx-xxxxx-xxxxx-xxxxx",
   "status": "PENDING",
   "createdAt": "2025-01-27T12:00:00.000Z"
 }
-\`\`\`
+```
 
 ### GET /api/demos
 
@@ -106,7 +106,7 @@ List all demos
 Get statistics
 
 **Response:**
-\`\`\`json
+```json
 {
   "total": 100,
   "pending": 5,
@@ -114,7 +114,7 @@ Get statistics
   "completed": 90,
   "failed": 3
 }
-\`\`\`
+```
 
 ### GET /api/demos/:id
 
@@ -130,7 +130,7 @@ Delete demo (including file)
 
 ## Project Structure
 
-\`\`\`
+```
 replay-hunter/
 ├── package.json
 ├── .env.example
@@ -156,7 +156,7 @@ replay-hunter/
 │       ├── logger.js          # Logging
 │       └── errors.js          # Error handling
 └── demos/                     # Demo file storage
-\`\`\`
+```
 
 ## Workflow
 
@@ -178,14 +178,14 @@ replay-hunter/
 When enabled, the service sends POST requests to the configured webhook URL when a demo is ready.
 
 **Configuration in \`.env\`:**
-\`\`\`env
+```env
 WEBHOOK_ENABLED=true
 WEBHOOK_URL=http://example.com/webhook
 WEBHOOK_SECRET=your_secret
-\`\`\`
+```
 
 **Webhook Payload:**
-\`\`\`json
+```json
 {
   "event": "demo.completed",
   "demoId": "uuid",
@@ -194,7 +194,7 @@ WEBHOOK_SECRET=your_secret
   "status": "COMPLETED",
   "downloadedAt": "2025-01-27T12:05:00.000Z"
 }
-\`\`\`
+```
 
 The \`X-Webhook-Signature\` header contains an HMAC-SHA256 hash of the payload with the configured secret.
 
@@ -203,25 +203,25 @@ The \`X-Webhook-Signature\` header contains an HMAC-SHA256 hash of the payload w
 The service automatically deletes old demos after a configured number of days.
 
 **Configuration in \`.env\`:**
-\`\`\`env
+```env
 CLEANUP_ENABLED=true
 CLEANUP_DAYS=30
 CLEANUP_INTERVAL_HOURS=24
-\`\`\`
+```
 
 ## Development
 
 ### Development Mode with Auto-Reload
 
-\`\`\`bash
+```bash
 npm run dev
-\`\`\`
+```
 
 ### Prisma Studio (Database GUI)
 
-\`\`\`bash
+```bash
 npm run prisma:studio
-\`\`\`
+```
 
 ### Logs
 
@@ -245,23 +245,23 @@ Logs are stored in \`logs/\`:
 
 ### Redis Connection Error
 
-\`\`\`bash
+```bash
 # macOS
 brew services start redis
 
 # Linux
 sudo systemctl start redis
-\`\`\`
+```
 
 ### PostgreSQL Connection Error
 
-\`\`\`bash
+```bash
 # macOS
 brew services start postgresql
 
 # Linux
 sudo systemctl start postgresql
-\`\`\`
+```
 
 ## Integration
 
@@ -269,7 +269,7 @@ This service was originally part of [CStatSentry](https://github.com/meinjens/cs
 
 You can integrate Replay Hunter with your own projects:
 
-\`\`\`javascript
+```javascript
 // Example: Request a demo download
 const response = await fetch('http://localhost:3000/api/demos', {
   method: 'POST',
@@ -280,7 +280,7 @@ const response = await fetch('http://localhost:3000/api/demos', {
 });
 
 const demo = await response.json();
-console.log(\`Demo ID: \${demo.id}\`);
+console.log("Demo ID: ${demo.id}");
 
 // Poll for completion
 const checkStatus = async (id) => {
@@ -288,7 +288,7 @@ const checkStatus = async (id) => {
   const data = await res.json();
   return data.status === 'COMPLETED';
 };
-\`\`\`
+```
 
 ## Contributing
 
