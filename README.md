@@ -34,7 +34,7 @@ git clone https://github.com/meinjens/replay-hunter.git
 cd replay-hunter
 
 # Install dependencies
-npm install
+pnpm install
 
 # Create database
 createdb csdemos
@@ -44,14 +44,14 @@ cp .env.example .env
 # Edit .env with your credentials
 
 # Run migrations
-npx prisma migrate dev --name init
-npx prisma generate
+pnpm prisma:migrate
+pnpm prisma:generate
 
 # Start Redis
 redis-server
 
 # Start service
-npm start
+pnpm start
 ```
 
 The service will run on \`http://localhost:3000\`
@@ -214,13 +214,13 @@ CLEANUP_INTERVAL_HOURS=24
 ### Development Mode with Auto-Reload
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 ### Prisma Studio (Database GUI)
 
 ```bash
-npm run prisma:studio
+pnpm prisma:studio
 ```
 
 ### Logs
