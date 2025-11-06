@@ -1,8 +1,8 @@
 # Replay Hunter 🎯
 
-**Hunt Down CS2 Demos** - Automatic demo file downloads via Steam Game Coordinator
+**Hunt Down CS2 Demos** - Backend REST API for automatic demo file downloads via Steam Game Coordinator
 
-A standalone REST API service for automatically downloading CS2 demo files using match sharecodes.
+A standalone **backend service** that provides a REST API for automatically downloading CS2 demo files using match sharecodes. Perfect for integration with frontend applications or other services.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
@@ -16,6 +16,8 @@ A standalone REST API service for automatically downloading CS2 demo files using
 - 🔄 **Download Queue** - Bull + Redis for reliable background jobs
 - 🧹 **Auto-Cleanup** - Automatic deletion of old demos
 - 🔔 **Webhooks** - Notifications when demos are ready
+- 🌐 **CORS Support** - Configurable CORS for frontend integration
+- 🐳 **Docker Ready** - Easy deployment with Docker
 
 ## Quick Start
 
@@ -56,10 +58,61 @@ pnpm start
 
 The service will run on \`http://localhost:3000\`
 
+## Docker Deployment
+
+### Using Docker Compose (Recommended)
+
+The easiest way to run the backend with all dependencies:
+
+```bash
+# Create .env file with your configuration
+cp .env.example .env
+# Edit .env with your Steam credentials
+
+# Start all services (API, PostgreSQL, Redis)
+docker-compose up -d
+
+# Run database migrations
+docker-compose exec api pnpm prisma:migrate
+
+# View logs
+docker-compose logs -f api
+
+# Stop services
+docker-compose down
+```
+
+The API will be available at `http://localhost:3000`
+
+### Using Docker Only
+
+```bash
+# Build the image
+docker build -t replay-hunter .
+
+# Run with external PostgreSQL and Redis
+docker run -d \
+  -p 3000:3000 \
+  -e DATABASE_URL=postgresql://user:password@host:5432/csdemos \
+  -e REDIS_URL=redis://host:6379 \
+  -e STEAM_USERNAME=your_username \
+  -e STEAM_PASSWORD=your_password \
+  -e CORS_ORIGIN=https://yourdomain.com \
+  --name replay-hunter \
+  replay-hunter
+```
+
 ## Environment Variables
 
 ```env
 PORT=3000
+NODE_ENV=development
+
+# CORS Configuration (for frontend integration)
+# Use * for development, specific origins for production (comma-separated)
+CORS_ORIGIN=*
+# Example for production: CORS_ORIGIN=https://yourdomain.com,https://app.yourdomain.com
+
 DATABASE_URL=postgresql://user:password@localhost:5432/csdemos
 REDIS_URL=redis://localhost:6379
 STEAM_USERNAME=your_steam_username
@@ -263,7 +316,32 @@ brew services start postgresql
 sudo systemctl start postgresql
 ```
 
-## Integration
+## Frontend Integration
+
+This is a **backend-only service** designed to be consumed by frontend applications. The API is CORS-enabled for seamless integration.
+
+### Connecting from a Frontend
+
+Configure your frontend to connect to the backend API:
+
+```javascript
+// Example: React/Next.js
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+
+// Fetch demos
+const response = await fetch(`${API_BASE_URL}/api/demos`);
+const demos = await response.json();
+```
+
+### Production Setup
+
+For production, set the `CORS_ORIGIN` environment variable to your frontend domain(s):
+
+```bash
+CORS_ORIGIN=https://yourdomain.com,https://app.yourdomain.com
+```
+
+## Integration Examples
 
 This service was originally part of [CStatSentry](https://github.com/meinjens/cstatsentry), a CS2 Anti-Cheat Detection System.
 
