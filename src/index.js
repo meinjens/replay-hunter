@@ -15,7 +15,10 @@ require('./queue/worker');
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: config.corsOrigin === '*' ? '*' : config.corsOrigin.split(',').map(o => o.trim()),
+  credentials: true,
+}));
 app.use(express.json());
 
 // Request logging

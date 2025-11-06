@@ -5,6 +5,9 @@ module.exports = {
   port: process.env.PORT || 3000,
   nodeEnv: process.env.NODE_ENV || 'development',
 
+  // CORS
+  corsOrigin: process.env.CORS_ORIGIN || '*',
+
   // Database
   databaseUrl: process.env.DATABASE_URL,
 

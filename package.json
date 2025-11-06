@@ -1,7 +1,7 @@
 {
   "name": "replay-hunter",
   "version": "1.0.0",
-  "description": "🎯 Hunt Down CS2 Demos - Automatic demo file downloads via Steam Game Coordinator",
+  "description": "🎯 Hunt Down CS2 Demos - Backend API for automatic demo file downloads via Steam Game Coordinator",
   "main": "src/index.js",
   "packageManager": "pnpm@10.20.0",
   "scripts": {
@@ -15,7 +15,7 @@
     "type": "git",
     "url": "git+https://github.com/meinjens/replay-hunter.git"
   },
-  "keywords": ["cs2", "csgo", "demo", "download", "api", "replay", "steam", "game-coordinator"],
+  "keywords": ["cs2", "csgo", "demo", "download", "api", "backend", "rest-api", "replay", "steam", "game-coordinator"],
   "author": "meinjens",
   "license": "MIT",
   "bugs": {
